@@ -1,0 +1,194 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    background:linear-gradient(rgba(0,0,0,0.35),rgba(0,0,0,0.35)),
+               url("bg.jpg");
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+    background-attachment:fixed;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+/* Glass Card */
+.container{
+    width:700px;
+    background:rgba(255,255,255,0.92);
+    backdrop-filter:blur(12px);
+    -webkit-backdrop-filter:blur(12px);
+    padding:40px;
+    border-radius:18px;
+    text-align:center;
+    box-shadow:0 12px 35px rgba(0,0,0,0.25);
+}
+
+/* Heading */
+.container h2{
+    color:#2b2b2b;
+    font-size:34px;
+    font-weight:700;
+    margin-bottom:25px;
+}
+
+/* Labels */
+label{
+    display:block;
+    text-align:left;
+    margin-bottom:6px;
+    margin-top:45px;
+    font-size:15px;
+    font-weight:600;
+    color:#444;
+}
+
+/* Inputs */
+input[type=text],
+input[type=password]{
+    width:100%;
+    padding:14px;
+    border:1px solid #ddd;
+    border-radius:10px;
+    background:#f8f9fa;
+    font-size:15px;
+    transition:.3s;
+}
+
+input[type=text]:focus,
+input[type=password]:focus{
+    outline:none;
+    border-color:#2d6cdf;
+    background:#fff;
+    box-shadow:0 0 8px rgba(45,108,223,.25);
+}
+
+/* Buttons */
+input[type=submit],
+.btn{
+    display:inline-block;
+    width:100%;
+    margin-top:22px;
+    padding:14px;
+    background:#2d6cdf;
+    color:#fff;
+    border:none;
+    border-radius:10px;
+    font-size:16px;
+    font-weight:600;
+    cursor:pointer;
+    text-decoration:none;
+    transition:.3s;
+}
+
+input[type=submit]:hover,
+.btn:hover{
+    background:#1f57c2;
+    transform:translateY(-2px);
+}
+
+/* Paragraph */
+p{
+    margin-top:18px;
+    color:#555;
+    font-size:15px;
+}
+
+/* Links */
+a{
+    color:#2d6cdf;
+    text-decoration:none;
+    font-weight:600;
+}
+
+a:hover{
+    text-decoration:underline;
+}
+
+/* Footer */
+.footer{
+    margin-top:25px;
+    color:#888;
+    font-size:14px;
+}
+
+/* Dashboard Buttons */
+.button-group{
+    display:flex;
+    justify-content:center;
+    gap:12px;
+    margin-top:25px;
+    flex-wrap:wrap;
+}
+
+.button-group .btn{
+    width:auto;
+    min-width:120px;
+    padding:12px 18px;
+}
+
+/* Dashboard Text */
+.welcome{
+    font-size:18px;
+    color:#444;
+    margin-top:10px;
+}
+
+.success{
+    color:#28a745;
+    margin-top:10px;
+    font-size:15px;
+}
+
+/* Responsive */
+@media(max-width:500px){
+
+.container{
+    width:90%;
+    padding:30px 20px;
+}
+
+.container h2{
+    font-size:28px;
+}
+
+.button-group{
+    flex-direction:column;
+}
+
+.button-group .btn{
+    width:100%;
+}
+
+}
+
+.role-badge{
+    display: inline-block;
+    margin: 12px auto 20px;
+    padding: 8px 18px;
+    background: #eaf4ff;
+    color: #0d6efd;
+    border: 1px solid #0d6efd;
+    border-radius: 20px;
+    font-size: 15px;
+    font-weight: 600;
+}
+.error-msg{
+    width:100%;
+    background:#ffe5e5;
+    color:#d8000c;
+    border:1px solid #ffb3b3;
+    border-radius:8px;
+    padding:10px;
+    margin:15px 0;
+    text-align:center;
+    box-sizing:border-box;
+}

@@ -9,16 +9,21 @@ if (!isset($_SESSION['username'])) {
 
 if (isset($_GET['id'])) {
 
-    $id = $_GET['id'];
+    $id = (int)$_GET['id'];
 
-    $sql = "DELETE FROM posts WHERE id=$id";
+    // Secure DELETE using Prepared Statement
+    $stmt = $conn->prepare("DELETE FROM posts WHERE id=?");
+    $stmt->bind_param("i", $id);
 
-    if ($conn->query($sql) === TRUE) {
+    if ($stmt->execute()) {
+        $stmt->close();
         header("Location: index.php");
         exit();
     } else {
-        echo "Error: " . $conn->error;
+        echo "Error: " . $stmt->error;
     }
+
+    $stmt->close();
 
 } else {
     echo "No post selected!";

@@ -14,21 +14,31 @@ $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 $start = ($page - 1) * $limit;
 
 // Fetch posts
-$sql = "SELECT * FROM posts
-        WHERE title LIKE '%$search%'
-        OR content LIKE '%$search%'
-        ORDER BY created_at 
-        LIMIT $start, $limit";
+$searchTerm = "%$search%";
 
-$result = $conn->query($sql);
+$stmt = $conn->prepare("SELECT * FROM posts
+                        WHERE title LIKE ?
+                        OR content LIKE ?
+                        ORDER BY created_at
+                        LIMIT ?, ?");
+
+$stmt->bind_param("ssii", $searchTerm, $searchTerm, $start, $limit);
+$stmt->execute();
+$result = $stmt->get_result();
 
 // Count total posts
-$countSql = "SELECT COUNT(*) AS total FROM posts
-             WHERE title LIKE '%$search%'
-             OR content LIKE '%$search%'";
+$countStmt = $conn->prepare("SELECT COUNT(*) AS total
+                             FROM posts
+                             WHERE title LIKE ?
+                             OR content LIKE ?");
 
-$countResult = $conn->query($countSql);
+$countStmt->bind_param("ss", $searchTerm, $searchTerm);
+$countStmt->execute();
+
+$countResult = $countStmt->get_result();
 $totalPosts = $countResult->fetch_assoc()['total'];
+
+$countStmt->close();
 $totalPages = ceil($totalPosts / $limit);
 ?>
 
@@ -82,7 +92,7 @@ $totalPages = ceil($totalPosts / $limit);
                 name="search"
                 class="form-control"
                 placeholder="Search title or content..."
-                value="<?php echo $search; ?>">
+                value="<?php echo htmlspecialchars($search); ?>">
         </div>
 
         <div class="col-md-2">
@@ -124,11 +134,11 @@ $totalPages = ceil($totalPosts / $limit);
 
                 <td><?php echo $row['id']; ?></td>
 
-                <td><?php echo $row['title']; ?></td>
+                <td><?php echo htmlspecialchars($row['title']); ?></td>
 
-                <td><?php echo $row['content']; ?></td>
+                <td><?php echo htmlspecialchars($row['content']); ?></td>
 
-                <td><?php echo $row['created_at']; ?></td>
+                <td><?php echo htmlspecialchars($row['created_at']); ?></td>
 
                 <td>
 
@@ -167,7 +177,7 @@ $totalPages = ceil($totalPosts / $limit);
                 <li class="page-item <?php if($page == $i) echo 'active'; ?>">
 
                     <a class="page-link"
-                       href="?page=<?php echo $i; ?>&search=<?php echo $search; ?>">
+                       href="?page=<?php echo $i; ?>&search=<?php echo htmlspecialchars($search); ?>">
 
                         <?php echo $i; ?>
 
@@ -175,7 +185,9 @@ $totalPages = ceil($totalPosts / $limit);
 
                 </li>
 
-            <?php } ?>
+            <?php } 
+            $stmt->close();
+            ?>
 
         </ul>
 

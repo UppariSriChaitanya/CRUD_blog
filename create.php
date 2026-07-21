@@ -9,16 +9,26 @@ if (!isset($_SESSION['username'])) {
 
 if (isset($_POST['submit'])) {
 
-    $title = $_POST['title'];
-    $content = $_POST['content'];
+    $title = htmlspecialchars(trim($_POST['title']));
+    $content = htmlspecialchars(trim($_POST['content']));
 
-    $sql = "INSERT INTO posts(title, content)
-            VALUES('$title','$content')";
-
-    if ($conn->query($sql) == TRUE) {
-        echo "Post Added Successfully!";
+    // Server-side Validation
+    if (empty($title) || empty($content)) {
+        echo "<script>alert('All fields are required!');</script>";
     } else {
-        echo "Error: " . $conn->error;
+
+        // Prepared Statement
+        $stmt = $conn->prepare("INSERT INTO posts(title, content) VALUES(?, ?)");
+        $stmt->bind_param("ss", $title, $content);
+        
+
+        if ($stmt->execute()) {
+            echo "<script>alert('Post Added Successfully!');</script>";
+        } else {
+            echo "<script>alert('Error: Unable to add post!');</script>";
+        }
+
+        $stmt->close();
     }
 }
 ?>
@@ -27,7 +37,7 @@ if (isset($_POST['submit'])) {
 <html>
 <head>
     <title>Create Post</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="auth.css">
 </head>
 <body>
 <div class="container">
